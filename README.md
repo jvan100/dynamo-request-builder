@@ -1,17 +1,36 @@
 # Dynamo Request Builder
-An intuitive DynamoDB request building API
+An intuitive DynamoDB request building API for JavaScript.
+
+## Contents
+- [Installation](#installation)
+- [Creating Requests](#creating-requests)
+- [Attributes](#attributes)
+- [Logical Operators](#logical-operators)
+- [Executing Requests](#executing-requests)
+
+## Installation
+
+```shell
+npm install dynamo-request-builder
+```
 
 ## Creating Requests
 
 Use the `DynamoRequestBuilderCreator` with a DynamoDB `DocumentClient` to create a `DynamoRequestBuilder`.
 
 ```javascript
+import DynamoRequestBuilderCreator from "dynamo-request-builder";
+
 const requestBuilder = new DynamoRequestBuilderCreator(dynamoDocClient).create("table_name");
 ```
 
 ### Delete
 
 ```javascript
+import { attribute, sizeOf } from "dynamo-request-builder/attributes";
+import { or } from "dynamo-request-builder/operators";
+import { ReturnValues } from "dynamo-request-builder/return-values";
+
 const request = requestBuilder.delete("partitionKeyName", "partitionKeyValue")
   .withSortKey("sortKeyName", "sortKeyValue") // Sort key condition
   .onlyIfAttribute("attribute").eq("value") // Add an attribute condition
@@ -33,6 +52,10 @@ const request = requestBuilder.get("partitionKeyName", "partitionKeyValue")
 
 ### Put
 ```javascript
+import { attribute, sizeOf } from "dynamo-request-builder/attributes";
+import { not } from "dynamo-request-builder/operators";
+import { ReturnValues } from "dynamo-request-builder/return-values";
+
 const item = {
   ...
 };
@@ -42,16 +65,19 @@ const request = requestBuilder.put(item)
   .onlyIfAttribute("attribute").eq("value") // Add an attribute condition
   .onlyIfSizeOfAttribute("attribute").lte(1) // Add a size of attribute condition
   .onlyIf(
-    or(attribute("attribute1").gte(1), attribute("attribute2").contains("value")),
-    sizeOf("attribute3").eq(2)
+	  not(attribute("attribute1").gte(1)),
+	  sizeOf("attribute3").eq(2)
   ) // Add multiple attribute conditions
   .returnValues(ReturnValues.AllOld); // Specify values to return
 ```
 
 ### Query
 ```javascript
+import { attribute, sizeOf } from "dynamo-request-builder/attributes";
+import { or } from "dynamo-request-builder/operators";
+
 const request = requestBuilder.query("partitionKeyName", "partitionKeyValue")
-  .whereSortKey("sortKeyName").contains("value") // Add a sort key condition
+  .whereSortKey("sortKeyName").beginsWith("value") // Add a sort key condition
   .whereAttribute("attribute").eq("value") // Add an attribute condition
   .whereSizeOfAttribute("attribute").lt(1) // Add a size of attribute condition
   .where(
@@ -66,6 +92,9 @@ const request = requestBuilder.query("partitionKeyName", "partitionKeyValue")
 
 ### Scan
 ```javascript
+import { attribute, sizeOf } from "dynamo-request-builder/attributes";
+import { or } from "dynamo-request-builder/operators";
+
 const request = requestBuilder.scan()
   .whereAttribute("attribute").eq("value") // Add an attribute condition
   .whereSizeOfAttribute("attribute").lt(1) // Add a size of attribute condition
@@ -76,11 +105,13 @@ const request = requestBuilder.scan()
   .getAttributes("attribute", "attribute[0]", "attribute[0].subAttribute") // Specify attributes to retrieve
   .limit(5) // Specify a limit on the number of items to return
   .useIndex("indexName") // Specify an index to use
-  .scanIndexDescending(); // Scan the index in descending order
 ```
 
 ### Update
 ```javascript
+import { attribute, sizeOf, update } from "dynamo-request-builder/attributes";
+import { or } from "dynamo-request-builder/operators";
+
 const request = requestBuilder.update("partitionKeyName", "partitionKeyValue")
   .withSortKey("sortKeyName", "sortKeyValue") // Sort key condition
   .updateAttribute("attribute").incrementBy(5) // Add an update operation
