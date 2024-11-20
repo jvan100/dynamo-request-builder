@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "An intuitive DynamoDB request building API",
   "type": "module",
+  "exports": {
+    ".": "./src/dynamo-request-builder-creator.js",
+    "./attributes": "./src/expressions/attributes/attribute-creators.js",
+    "./requests/return-values": "./src/requests/return-values.js"
+  },
   "author": "jvan100",
   "license": "ISC",
   "repository": {
