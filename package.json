@@ -1,0 +1,11 @@
+{
+  "name": "dynamo-request-builder",
+  "version": "1.0.0",
+  "description": "An intuitive DynamoDB request building API",
+  "type": "module",
+  "author": "jvan100",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/lib-dynamodb": "^3.696.0"
+  }
+}
