@@ -5,6 +5,11 @@
   "type": "module",
   "author": "jvan100",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvan100/dynamo-request-builder.git"
+  },
+  "homepage": "https://github.com/jvan100/dynamo-request-builder#readme",
   "dependencies": {
     "@aws-sdk/lib-dynamodb": "^3.696.0"
   }
