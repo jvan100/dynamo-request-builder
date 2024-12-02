@@ -1,6 +1,6 @@
 {
   "name": "dynamo-request-builder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An intuitive DynamoDB request building API",
   "type": "module",
   "exports": {
